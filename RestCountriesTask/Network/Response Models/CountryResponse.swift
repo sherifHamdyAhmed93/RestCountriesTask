@@ -8,14 +8,15 @@
 import Foundation
 
 struct CountryResponse: Decodable {
-    let common:String
+    let name:String
     let cca2: String
-    let capital: [String]?
-    let currencies: [String: CurrencyResponse]?
+    let capital: String
+    let currencies: [CurrencyResponse]?
     let flags: FlagResponse?
 }
 
 struct CurrencyResponse: Decodable {
+    let code:String
     let name: String
     let symbol: String?
 }

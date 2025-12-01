@@ -18,9 +18,9 @@ struct CountryUIModel : Identifiable , Hashable {
 extension CountryUIModel {
     init(from response: CountryResponse) {
         self.id = response.cca2
-        self.capital = response.capital?.first ?? ""
-        self.countryName = response.common
-        let currency = response.currencies?.values.first
+        self.capital = response.capital
+        self.countryName = response.name
+        let currency = response.currencies?.first
         self.currencyName = currency?.name ?? ""
         self.currencySymbol = currency?.symbol ?? ""
         
