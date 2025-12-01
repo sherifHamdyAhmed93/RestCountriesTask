@@ -18,9 +18,26 @@ struct DetailsView: View {
                 capital: country.capital,
                 currencyName: country.currencyName
                 ,capitalFont: .system(size: 30, weight: .bold, design: .rounded),
-            currencyFont: .system(size: 20, weight: .medium, design: .rounded),
-            alignment: .center)
-
+                currencyFont: .system(size: 20, weight: .medium, design: .rounded),
+                alignment: .center)
+            
+        }
+        
+        .navigationTitle(country.countryName)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 25, weight: .bold))
+                            .tint(.primary)
+                    }
+                }
+            }
         }
     }
 }
@@ -28,10 +45,12 @@ struct DetailsView: View {
 #Preview {
     let country = CountryUIModel(
         id: "QA",
-        capital: "Doha",
+        capital: "Doha", countryName: "Qatar",
         currencyName: "Qatari Riyal",
         currencySymbol: "QAR",
         flagURL: URL(string: "https://flagcdn.com/w320/qa.png")
     )
-    DetailsView(country: country)
+    NavigationStack {
+        DetailsView(country: country)
+    }
 }

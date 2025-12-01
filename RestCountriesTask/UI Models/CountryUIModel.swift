@@ -6,9 +6,10 @@
 //
 
 import Foundation
-struct CountryUIModel : Identifiable {
+struct CountryUIModel : Identifiable , Hashable {
     let id: String
     let capital: String
+    let countryName: String
     let currencyName: String
     let currencySymbol: String
     let flagURL: URL?
@@ -18,7 +19,7 @@ extension CountryUIModel {
     init(from response: CountryResponse) {
         self.id = response.cca2
         self.capital = response.capital?.first ?? ""
-        
+        self.countryName = response.common
         let currency = response.currencies?.values.first
         self.currencyName = currency?.name ?? ""
         self.currencySymbol = currency?.symbol ?? ""

@@ -8,6 +8,7 @@
 import Foundation
 
 struct CountryResponse: Decodable {
+    let common:String
     let cca2: String
     let capital: [String]?
     let currencies: [String: CurrencyResponse]?

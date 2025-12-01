@@ -21,6 +21,7 @@ struct CountryRowView: View {
     let country = CountryUIModel(
         id: "QA",
         capital: "Doha",
+        countryName: "Qatar",
         currencyName: "Qatari Riyal",
         currencySymbol: "QAR",
         flagURL: URL(string: "https://flagcdn.com/w320/qa.png")
