@@ -12,27 +12,15 @@ struct DetailsView: View {
     let country:CountryUIModel
     var body: some View {
         VStack(alignment: .center, spacing: 16.0) {
-            if let flagURL = country.flagURL{
-                AsyncImage(url: flagURL) { image in
-                    image
-                    .resizable()
-                } placeholder: {
-                    Color.gray
-                }
-                .frame(width: UIScreen.main.bounds.width/2,height: UIScreen.main.bounds.width/2)
-                .clipShape(.circle)
-                .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 5)
-            }
+            CircularAsyncImage(url: country.flagURL, size: UIScreen.main.bounds.width / 2)
             
-            
-            VStack(alignment: .center, spacing: 5.0){
-                Text(country.capital)
-                    .font(.system(size: 25, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primary)
-                Text(country.currencyName)
-                    .font(.system(size: 20, weight: .regular, design: .rounded))
-                    .foregroundStyle(.secondary)
-            }
+            CountryInfoView(
+                capital: country.capital,
+                currencyName: country.currencyName
+                ,capitalFont: .system(size: 30, weight: .bold, design: .rounded),
+            currencyFont: .system(size: 20, weight: .medium, design: .rounded),
+            alignment: .center)
+
         }
     }
 }
