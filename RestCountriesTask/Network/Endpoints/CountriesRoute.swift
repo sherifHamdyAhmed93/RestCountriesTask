@@ -8,12 +8,12 @@
 import Foundation
 
 enum CountryRoute : RouteProtocol{
-    case city(cityName:String)
+    case allCountries
     
     var path: String{
         switch self {
-        case .city(let cityName):
-            return "/name/\(cityName)"
+        case .allCountries:
+            return "/all?fields=name,capital,currencies,flags"
         }
     }
     

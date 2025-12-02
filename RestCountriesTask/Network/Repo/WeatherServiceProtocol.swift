@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol CountryServiceProtocol{
-    func getCountry(cityName:String)->AnyPublisher<CountryResponse,Error>
+    func getAllCountries()->AnyPublisher<[CountryResponse],Error>
 }
 
 final class CountryService : CountryServiceProtocol{
@@ -21,9 +21,9 @@ final class CountryService : CountryServiceProtocol{
         self.networkService = networkService
     }
     
-    func getCountry(cityName:String)->AnyPublisher<CountryResponse,Error>{
-        let route = CountryRoute.city(cityName: cityName)
-        return networkService.request(route, type: CountryResponse.self)
+    func getAllCountries()->AnyPublisher<[CountryResponse],Error>{
+        let route = CountryRoute.allCountries
+        return networkService.request(route, type: [CountryResponse].self)
     }
     
 }
