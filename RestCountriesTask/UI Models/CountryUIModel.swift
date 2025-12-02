@@ -16,13 +16,15 @@ class CountryUIModel : Identifiable , Hashable {
     var currencyName: String
     var currencySymbol: String
     var flagURL: URL?
+    var countryCode:String = ""
     
-    init(capital: String, countryName: String, currencyName: String, currencySymbol: String, flagURL: URL? = nil) {
+    init(capital: String, countryName: String, currencyName: String, currencySymbol: String, flagURL: URL? = nil,countryCode:String) {
         self.capital = capital
         self.countryName = countryName
         self.currencyName = currencyName
         self.currencySymbol = currencySymbol
         self.flagURL = flagURL
+        self.countryCode = countryCode
     }
     
     
@@ -33,7 +35,7 @@ class CountryUIModel : Identifiable , Hashable {
         let currency = response.currencies?.first
         self.currencyName = currency?.name ?? ""
         self.currencySymbol = currency?.symbol ?? ""
-        
+        self.countryCode = response.alpha2Code
         if let png = response.flags?.png, !png.isEmpty {
             self.flagURL = URL(string: png)
         }else{
@@ -41,3 +43,11 @@ class CountryUIModel : Identifiable , Hashable {
         }
     }
 }
+
+extension CountryUIModel : Equatable{
+    static func == (lhs: CountryUIModel, rhs: CountryUIModel) -> Bool {
+        return lhs.countryCode == rhs.countryCode
+    }
+}
+
+

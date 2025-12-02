@@ -48,7 +48,7 @@ struct DetailsView: View {
         capital: "Doha", countryName: "Qatar",
         currencyName: "Qatari Riyal",
         currencySymbol: "QAR",
-        flagURL: URL(string: "https://flagcdn.com/w320/qa.png")
+        flagURL: URL(string: "https://flagcdn.com/w320/qa.png") , countryCode: "EG"
     )
     NavigationStack {
         DetailsView(country: country)

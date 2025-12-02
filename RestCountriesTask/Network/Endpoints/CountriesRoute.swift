@@ -13,7 +13,7 @@ enum CountryRoute : RouteProtocol{
     var path: String{
         switch self {
         case .allCountries:
-            return "/all?fields=name,capital,currencies,flags"
+            return "/all?fields=name,capital,currencies,flags,alpha2Code"
         }
     }
     

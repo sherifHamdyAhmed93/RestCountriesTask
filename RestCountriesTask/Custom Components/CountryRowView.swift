@@ -24,7 +24,7 @@ struct CountryRowView: View {
         countryName: "Qatar",
         currencyName: "Qatari Riyal",
         currencySymbol: "QAR",
-        flagURL: URL(string: "https://flagcdn.com/w320/qa.png")
+        flagURL: URL(string: "https://flagcdn.com/w320/qa.png"), countryCode: "EG"
     )
     CountryRowView(country: country)
 }

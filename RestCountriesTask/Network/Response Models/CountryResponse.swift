@@ -12,6 +12,7 @@ struct CountryResponse: Decodable {
     let capital: String?
     let currencies: [CurrencyResponse]?
     let flags: FlagResponse?
+    let alpha2Code:String
 }
 struct CurrencyResponse: Decodable {
     let code:String
