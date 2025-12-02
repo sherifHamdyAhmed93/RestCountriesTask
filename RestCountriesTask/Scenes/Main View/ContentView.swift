@@ -12,13 +12,19 @@ struct ContentView: View {
     @StateObject private var viewModel = CountryListViewModel()
     @Environment(\.modelContext) private var context
 
+    @State private var didLoad = false
+
 
     var body: some View {
         NavigationStack {
             VStack{
-                 if viewModel.mainCountries.isEmpty{
-                    EmptyDataView(emptyState: .noCountries)
-                }else{
+                if viewModel.isLoading{
+                    LoaderView()
+                }
+//                else if viewModel.mainCountries.isEmpty{
+//                    EmptyDataView(emptyState: .noCountries)
+//                }
+                else{
                     List {
                         ForEach(viewModel.mainCountries) { country in
                             CountryRowView(country: country)
@@ -27,9 +33,7 @@ struct ContentView: View {
                                 }
                         }
                         
-                        .onDelete { indexSet in
-                            viewModel.deleteCity(at: indexSet, context: context)
-                        }
+                        .onDelete(perform: viewModel.deleteCity)
                     }
                 }
             }
@@ -49,7 +53,9 @@ struct ContentView: View {
                 }
             }
             .task {
-                viewModel.fetchLocalCountries(context: context)
+                guard !didLoad else { return }
+                self.didLoad = true
+                viewModel.loadAppData(context: context)
             }
         }
     }

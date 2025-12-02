@@ -23,7 +23,7 @@ struct SearchView: View {
                 List {
                     ForEach(viewModel.filteredCountries){country in
                         Button {
-                            viewModel.addCountry(country,context: context)
+                            viewModel.addCountry(country)
                             dismiss()
                         } label: {
                             CountryRowView(country: country)
@@ -41,7 +41,7 @@ struct SearchView: View {
             }
         }
         .task {
-            viewModel.loadCountires()
+            await viewModel.loadCountires()
         }
         .onDisappear {
             viewModel.onBackFromSearchView()
