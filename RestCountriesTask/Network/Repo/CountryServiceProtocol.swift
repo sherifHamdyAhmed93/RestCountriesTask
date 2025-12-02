@@ -15,9 +15,9 @@ protocol CountryServiceProtocol{
 
 final class CountryService : CountryServiceProtocol{
     
-    let networkService:NetworkService
+    let networkService:NetworkServiceProtocol
     
-    init(networkService: NetworkService = NetworkService()) {
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
     }
     

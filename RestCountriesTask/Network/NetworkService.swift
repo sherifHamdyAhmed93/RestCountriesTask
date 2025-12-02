@@ -8,7 +8,13 @@
 
 import Foundation
 import Combine
-final class NetworkService {
+
+protocol NetworkServiceProtocol{
+    func request<T: Decodable>(_ route: RouteProtocol, type: T.Type) -> AnyPublisher<T, Error>
+}
+
+
+final class NetworkService : NetworkServiceProtocol{
     func request<T: Decodable>(_ route: RouteProtocol, type: T.Type) -> AnyPublisher<T, Error> {
         guard let url = route.url else {
             return Fail(error: ApiError.invalidURL).eraseToAnyPublisher()

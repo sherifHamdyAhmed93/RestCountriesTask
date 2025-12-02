@@ -11,7 +11,7 @@ enum EmptyStateType {
     case noCountries
     case noSearchResults
     case error(String)
-
+    
     var title: String {
         switch self {
         case .noCountries:
@@ -22,7 +22,7 @@ enum EmptyStateType {
             return "Error"
         }
     }
-
+    
     var description: String {
         switch self {
         case .noCountries:
@@ -31,6 +31,22 @@ enum EmptyStateType {
             return "Try searching with a different country name."
         case .error(let message):
             return message
+        }
+    }
+}
+
+extension EmptyStateType : Equatable{
+    
+    static func ==(lhs: EmptyStateType, rhs: EmptyStateType) -> Bool {
+        switch (lhs, rhs) {
+        case (.noCountries, .noCountries):
+            return true
+        case (.noSearchResults, .noSearchResults):
+            return true
+        case (.error(let lMsg), .error(let rMsg)):
+            return lMsg == rMsg
+        default:
+            return false
         }
     }
 }

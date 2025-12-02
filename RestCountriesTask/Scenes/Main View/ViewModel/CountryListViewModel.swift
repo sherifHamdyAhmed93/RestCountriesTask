@@ -37,7 +37,6 @@ final class CountryListViewModel: ObservableObject {
     /// - If local countries is empty then fetch from server
     /// - Request access to user location after fetching all countries
     ///
-
     func loadAppData(context: ModelContext) {
         self.modelContext = context
         fetchLocalCountries(context: context)
