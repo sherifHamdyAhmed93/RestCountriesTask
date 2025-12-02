@@ -44,7 +44,7 @@ struct DetailsView: View {
 
 #Preview {
     let country = CountryUIModel(
-        id: "QA",
+//        id: "QA",
         capital: "Doha", countryName: "Qatar",
         currencyName: "Qatari Riyal",
         currencySymbol: "QAR",

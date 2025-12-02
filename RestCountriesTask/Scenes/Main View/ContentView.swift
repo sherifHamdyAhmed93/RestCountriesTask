@@ -10,14 +10,13 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedCountry: CountryUIModel?
     @StateObject private var viewModel = CountryListViewModel()
-    
-    
+    @Environment(\.modelContext) private var context
+
+
     var body: some View {
         NavigationStack {
             VStack{
-                if viewModel.isLoading{
-                    LoaderView()
-                }else if viewModel.mainCountries.isEmpty{
+                 if viewModel.mainCountries.isEmpty{
                     EmptyDataView(emptyState: .noCountries)
                 }else{
                     List {
@@ -28,7 +27,9 @@ struct ContentView: View {
                                 }
                         }
                         
-                        .onDelete(perform: viewModel.deleteCity)
+                        .onDelete { indexSet in
+                            viewModel.deleteCity(at: indexSet, context: context)
+                        }
                     }
                 }
             }
@@ -48,7 +49,7 @@ struct ContentView: View {
                 }
             }
             .task {
-                viewModel.loadCountires()
+                viewModel.fetchLocalCountries(context: context)
             }
         }
     }
@@ -56,5 +57,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        //.modelContainer(for: CountryUIModel.self, inMemory: true)
 }
 

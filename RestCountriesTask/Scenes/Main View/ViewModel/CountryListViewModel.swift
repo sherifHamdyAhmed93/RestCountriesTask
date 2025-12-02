@@ -7,17 +7,18 @@
 
 import Foundation
 import Combine
+import SwiftData
 
 final class CountryListViewModel: ObservableObject {
     private(set) var countries: [CountryUIModel] = []
     @Published private(set) var mainCountries:[CountryUIModel] = []
     @Published private(set) var filteredCountries:[CountryUIModel] = []
-
+    
     @Published private(set) var isLoading:Bool = false
     @Published var query:String = ""
     @Published private(set) var error:String = ""
     @Published private(set) var emptyState:EmptyStateType?
-
+    
     private let countryService:CountryServiceProtocol
     
     private var cancellables = Set<AnyCancellable>()
@@ -25,6 +26,15 @@ final class CountryListViewModel: ObservableObject {
     init(countryService: CountryServiceProtocol = CountryService()) {
         self.countryService = countryService
         bindSearchQuery()
+    }
+    
+    func fetchLocalCountries(context:ModelContext){
+        let descriptor = FetchDescriptor<CountryUIModel>(
+            sortBy: [SortDescriptor(\.countryName)]
+        )
+        
+        let result = try? context.fetch(descriptor)
+        self.mainCountries = result ?? []
     }
     
     private func bindSearchQuery(){
@@ -41,6 +51,7 @@ final class CountryListViewModel: ObservableObject {
     }
     
     func loadCountires() {
+        guard countries.isEmpty else{return}
         isLoading = true
         countryService.getAllCountries()
             .sink { [weak self] completion in
@@ -82,10 +93,11 @@ final class CountryListViewModel: ObservableObject {
         self.filteredCountries = result
     }
     
-    func addCountry(_ country: CountryUIModel) {
+    func addCountry(_ country: CountryUIModel , context:ModelContext) {
         guard mainCountries.count < 5 else { return }
         if !mainCountries.contains(country) {
             mainCountries.append(country)
+            context.insert(country)
         }
     }
     
@@ -94,8 +106,10 @@ final class CountryListViewModel: ObservableObject {
         self.query = ""
     }
     
-    func deleteCity(at offsets: IndexSet) {
+    func deleteCity(at offsets: IndexSet, context:ModelContext) {
         offsets.forEach { index in
+            let country = mainCountries[index]
+            context.delete(country)
             mainCountries.remove(at: index)
         }
     }

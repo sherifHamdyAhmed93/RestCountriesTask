@@ -6,18 +6,28 @@
 //
 
 import Foundation
-struct CountryUIModel : Identifiable , Hashable {
-    let id: String
-    let capital: String
-    let countryName: String
-    let currencyName: String
-    let currencySymbol: String
-    let flagURL: URL?
-}
+import SwiftData
 
-extension CountryUIModel {
+@Model
+class CountryUIModel : Identifiable , Hashable {
+    //var id: String
+    var capital: String
+    var countryName: String
+    var currencyName: String
+    var currencySymbol: String
+    var flagURL: URL?
+    
+    init(capital: String, countryName: String, currencyName: String, currencySymbol: String, flagURL: URL? = nil) {
+        self.capital = capital
+        self.countryName = countryName
+        self.currencyName = currencyName
+        self.currencySymbol = currencySymbol
+        self.flagURL = flagURL
+    }
+    
+    
     init(from response: CountryResponse) {
-        self.id = response.name
+        //self.id = response.name
         self.capital = response.capital ?? ""
         self.countryName = response.name
         let currency = response.currencies?.first

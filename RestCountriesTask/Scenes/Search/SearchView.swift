@@ -10,16 +10,19 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var viewModel: CountryListViewModel
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.modelContext) private var context
+
     var body: some View {
         VStack{
-             if let emptyState = viewModel.emptyState{
+            if viewModel.isLoading{
+                LoaderView()
+            }else if let emptyState = viewModel.emptyState{
                 EmptyDataView(emptyState: emptyState)
             }else{
                 List {
                     ForEach(viewModel.filteredCountries){country in
                         Button {
-                            viewModel.addCountry(country)
+                            viewModel.addCountry(country,context: context)
                             dismiss()
                         } label: {
                             CountryRowView(country: country)
@@ -31,6 +34,9 @@ struct SearchView: View {
         }
         .navigationTitle("Search Country")
         .searchable(text: $viewModel.query, prompt: "Search by country name")
+        .task {
+            viewModel.loadCountires()
+        }
         .onDisappear {
             viewModel.onBackFromSearchView()
         }
