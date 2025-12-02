@@ -9,66 +9,40 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedCountry: CountryUIModel?
+    @StateObject private var viewModel = CountryListViewModel()
     
-    @State var mockedCountries: [CountryUIModel] = [
-        CountryUIModel(
-            id: "QA",
-            capital: "Doha",countryName: "Qatar",
-            currencyName: "Qatari Riyal",
-            currencySymbol: "QAR",
-            flagURL: URL(string: "https://flagcdn.com/w320/qa.png")
-        ),
-        CountryUIModel(
-            id: "SA",
-            capital: "Riyadh",countryName: "Qatar",
-            currencyName: "Saudi Riyal",
-            currencySymbol: "SAR",
-            flagURL: URL(string: "https://flagcdn.com/w320/sa.png")
-        ),
-        CountryUIModel(
-            id: "EG",
-            capital: "Cairo",countryName: "Qatar",
-            currencyName: "Egyptian Pound",
-            currencySymbol: "EGP",
-            flagURL: URL(string: "https://flagcdn.com/w320/eg.png")
-        ),
-        CountryUIModel(
-            id: "AE",
-            capital: "Abu Dhabi",countryName: "Qatar",
-            currencyName: "UAE Dirham",
-            currencySymbol: "AED",
-            flagURL: URL(string: "https://flagcdn.com/w320/ae.png")
-        ),
-        CountryUIModel(
-            id: "KW",
-            capital: "Kuwait City",countryName: "Qatar",
-            currencyName: "Kuwaiti Dinar",
-            currencySymbol: "KWD",
-            flagURL: URL(string: "https://flagcdn.com/w320/kw.png")
-        )
-    ]
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(mockedCountries) { country in
+                ForEach(viewModel.mainCountries) { country in
                     CountryRowView(country: country)
                         .onTapGesture {
                             selectedCountry = country
                         }
                 }
                 
-                .onDelete(perform: delete)
+                .onDelete(perform: viewModel.deleteCity)
             }
             .navigationTitle("Countires")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(item: $selectedCountry) { country in
                 DetailsView(country: country)
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        SearchView(viewModel: viewModel)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .disabled(viewModel.mainCountries.count >= 5)
+                }
+            }
+            .task {
+                viewModel.loadCountires()
+            }
         }
-    }
-    
-    private func delete(_ indexSet:IndexSet){
-        self.mockedCountries.remove(atOffsets: indexSet)
     }
 }
 
