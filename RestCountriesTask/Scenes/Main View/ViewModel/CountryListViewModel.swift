@@ -41,9 +41,9 @@ final class CountryListViewModel: ObservableObject {
         $query
             .debounce(for: .seconds(1), scheduler: RunLoop.main)
             .removeDuplicates()
-            .filter {
-                $0.isEmpty == false
-            }
+//            .filter {
+//                $0.isEmpty == false
+//            }
             .sink { [weak self] country in
                 self?.search(for: country)
             }
@@ -65,9 +65,11 @@ final class CountryListViewModel: ObservableObject {
                     print("Error : \(error.localizedDescription)")
                 }
             } receiveValue: { [weak self]response in
-                self?.countries = response.map({
+                guard let self else{return}
+                self.countries = response.map({
                     CountryUIModel(from: $0)
                 })
+                self.filteredCountries = self.countries
             }
             .store(in: &cancellables)
     }
@@ -99,6 +101,10 @@ final class CountryListViewModel: ObservableObject {
             mainCountries.append(country)
             context.insert(country)
         }
+    }
+    
+    func cancelSearch(){
+        self.filteredCountries = self.countries
     }
     
     func onBackFromSearchView(){

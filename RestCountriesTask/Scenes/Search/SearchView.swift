@@ -11,7 +11,8 @@ struct SearchView: View {
     @ObservedObject var viewModel: CountryListViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-
+    @State private var isSearching = false
+   
     var body: some View {
         VStack{
             if viewModel.isLoading{
@@ -33,7 +34,12 @@ struct SearchView: View {
             }
         }
         .navigationTitle("Search Country")
-        .searchable(text: $viewModel.query, prompt: "Search by country name")
+        .searchable(text: $viewModel.query,isPresented: $isSearching, prompt: "Search by country name")
+        .onChange(of: isSearching) { _, newValue in
+            if newValue == false {
+                viewModel.cancelSearch()
+            }
+        }
         .task {
             viewModel.loadCountires()
         }
