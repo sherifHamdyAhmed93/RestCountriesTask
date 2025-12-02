@@ -185,7 +185,8 @@ extension CountryListViewModel{
                     print("Finished")
                     onFinished?()
                 case .failure(let error):
-                    self?.error = error.localizedDescription
+                    //self?.error = error.localizedDescription
+                    self?.emptyState = .error(error.localizedDescription)
                     print("Error : \(error.localizedDescription)")
                     onFinished?()
                 }
