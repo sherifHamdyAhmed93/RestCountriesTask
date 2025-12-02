@@ -13,7 +13,7 @@ struct SearchView: View {
     
     var body: some View {
         VStack{
-            if let emptyState = viewModel.emptyState{
+             if let emptyState = viewModel.emptyState{
                 EmptyDataView(emptyState: emptyState)
             }else{
                 List {

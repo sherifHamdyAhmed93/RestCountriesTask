@@ -15,7 +15,9 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack{
-                if viewModel.mainCountries.isEmpty{
+                if viewModel.isLoading{
+                    LoaderView()
+                }else if viewModel.mainCountries.isEmpty{
                     EmptyDataView(emptyState: .noCountries)
                 }else{
                     List {
