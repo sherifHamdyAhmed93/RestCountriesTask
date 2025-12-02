@@ -14,15 +14,21 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.mainCountries) { country in
-                    CountryRowView(country: country)
-                        .onTapGesture {
-                            selectedCountry = country
+            VStack{
+                if viewModel.mainCountries.isEmpty{
+                    EmptyDataView(emptyState: .noCountries)
+                }else{
+                    List {
+                        ForEach(viewModel.mainCountries) { country in
+                            CountryRowView(country: country)
+                                .onTapGesture {
+                                    selectedCountry = country
+                                }
                         }
+                        
+                        .onDelete(perform: viewModel.deleteCity)
+                    }
                 }
-                
-                .onDelete(perform: viewModel.deleteCity)
             }
             .navigationTitle("Countires")
             .navigationBarTitleDisplayMode(.inline)

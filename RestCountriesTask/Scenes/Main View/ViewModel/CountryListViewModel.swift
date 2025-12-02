@@ -16,7 +16,8 @@ final class CountryListViewModel: ObservableObject {
     @Published private(set) var isLoading:Bool = false
     @Published var query:String = ""
     @Published private(set) var error:String = ""
-    
+    @Published private(set) var emptyState:EmptyStateType?
+
     private let countryService:CountryServiceProtocol
     
     private var cancellables = Set<AnyCancellable>()
@@ -62,6 +63,7 @@ final class CountryListViewModel: ObservableObject {
     
     func resetFilteredCountries(){
         self.filteredCountries = []
+        self.emptyState = nil
     }
     
     private func search(for name:String){
@@ -73,6 +75,10 @@ final class CountryListViewModel: ObservableObject {
         let result =  countries.filter { country in
             return country.countryName.lowercased().contains(name.lowercased())
         }
+        
+        if result.isEmpty{
+            emptyState = .noSearchResults
+        }
         self.filteredCountries = result
     }
     
@@ -81,6 +87,11 @@ final class CountryListViewModel: ObservableObject {
         if !mainCountries.contains(country) {
             mainCountries.append(country)
         }
+    }
+    
+    func onBackFromSearchView(){
+        self.resetFilteredCountries()
+        self.query = ""
     }
     
     func deleteCity(at offsets: IndexSet) {

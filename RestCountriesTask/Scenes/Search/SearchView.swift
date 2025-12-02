@@ -12,21 +12,27 @@ struct SearchView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        List {
-            ForEach(viewModel.filteredCountries){country in
-                Button {
-                    viewModel.addCountry(country)
-                    dismiss()
-                } label: {
-                    CountryRowView(country: country)
+        VStack{
+            if let emptyState = viewModel.emptyState{
+                EmptyDataView(emptyState: emptyState)
+            }else{
+                List {
+                    ForEach(viewModel.filteredCountries){country in
+                        Button {
+                            viewModel.addCountry(country)
+                            dismiss()
+                        } label: {
+                            CountryRowView(country: country)
+                        }
+                    }
                 }
+
             }
         }
         .navigationTitle("Search Country")
         .searchable(text: $viewModel.query, prompt: "Search by country name")
         .onDisappear {
-            viewModel.query = ""
-            viewModel.resetFilteredCountries()
+            viewModel.onBackFromSearchView()
         }
     }
 }
